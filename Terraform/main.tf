@@ -9,7 +9,7 @@ terraform {
 
 # Configure the AWS Provider
 provider "aws" {
-  region = "ap-south-1"
+  region = "us-west-2"
   access_key = var.access_key
   secret_key = var.secret_key
 }
@@ -40,9 +40,9 @@ resource "aws_security_group" "ec2_security_group" {
   }
 }
 
-resource "aws_instance" "Monitoring_server" {
-ami = "ami-00bb6a80f01f03502"  
-instance_type = "t2.medium"
+resource "aws_instance" "Monitoring_server1" {
+ami = "ami-03aa99ddf5498ceb9"  
+instance_type = "t3.micro"
 security_groups = [aws_security_group.ec2_security_group.name]
 key_name = var.key_name
 tags = {
