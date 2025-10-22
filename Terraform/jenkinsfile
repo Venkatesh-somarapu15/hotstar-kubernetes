@@ -4,6 +4,7 @@ pipeline {
     environment {
         AWS_ACCESS_KEY_ID     = credentials('AWS_ACCESS_KEY_ID')
         AWS_SECRET_ACCESS_KEY = credentials('AWS_SECRET_ACCESS_KEY')
+        AWS_DEFAULT_REGION     = 'us-west-2'
     }
 
     parameters {
@@ -13,7 +14,7 @@ pipeline {
     stages {
         stage('Checkout from Git') {                        
             steps {
-                git branch: 'main', credentialsId: 'github-token', url: 'https://github.com/Aseemakram19/hotstar-kubernetes.git'
+                git branch: 'main', url: 'https://github.com/Venkatesh-somarapu15/hotstar-kubernetes.git'
             }
         }
 
@@ -59,7 +60,7 @@ pipeline {
             steps {
                 dir('Terraform') {
                     sh '''
-                    terraform ${action} --auto-approve \
+                    terraform "${action}" --auto-approve \
                     -var="access_key=$AWS_ACCESS_KEY_ID" \
                     -var="secret_key=$AWS_SECRET_ACCESS_KEY"
                     '''
@@ -69,11 +70,7 @@ pipeline {
     }
 
     post {
-        success {
-            echo '✅ Terraform execution completed successfully!'
-        }
-        failure {
-            echo '❌ Terraform execution failed! Check the logs.'
-        }
+        success { echo '✅ Terraform pipeline completed successfully!' }
+        failure { echo '❌ Terraform pipeline failed! Check the logs.' }
     }
 }
